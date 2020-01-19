@@ -1,0 +1,340 @@
+for i=1:50
+        allt1{i}=[max(-30,min(normrnd(0,10),30)),max(-30,min(normrnd(0,10),30)),max(-30,min(normrnd(0,10),30))];
+        allt2{i}=[max(-30,min(normrnd(0,10),30)),max(-30,min(normrnd(0,10),30)),max(-30,min(normrnd(0,10),30))];
+        allt3{i}=[max(-30,min(normrnd(0,10),30)),max(-30,min(normrnd(0,10),30)),max(-30,min(normrnd(0,10),30))];
+        allt4{i}=[max(-30,min(normrnd(0,10),30)),max(-30,min(normrnd(0,10),30)),max(-30,min(normrnd(0,10),30))];
+end
+
+    
+im=rgb2gray(imread('image.jpg'));
+im=im2double(im);
+im=resample(im,2,1)'; % upsample the image by 2
+im=resample(im,2,1)';
+%im=resample(im,2,1)';
+errsBase{1}=getBaseVals(im,allt1,allt2,allt3,allt4);
+%errsTest{1}=getTestVals(im,allt2,allt3);
+
+
+im=rgb2gray(imread('image2.jpg'));
+im=im2double(im);
+im=resample(im,2,1)'; % upsample the image by 2
+im=resample(im,2,1)';
+%im=resample(im,2,1)';
+errsBase{2}=getBaseVals(im,allt1,allt2,allt3,allt4);
+%errsTest{2}=getTestVals(im,allt2,allt3);
+
+
+im=rgb2gray(imread('image3.png'));
+im=im2double(im);
+im=resample(im,2,1)'; % upsample the image by 2
+im=resample(im,2,1)';
+errsBase{3}=getBaseVals(im,allt1,allt2,allt3,allt4);
+%errsTest{3}=getTestVals(im,allt2,allt3);
+
+
+im=(imread('image4.jpg'));
+im=im2double(im);
+im=resample(im,2,1)'; % upsample the image by 2
+im=resample(im,2,1)';
+errsBase{4}=getBaseVals(im,allt1,allt2,allt3,allt4);
+%errsTest{4}=getTestVals(im,allt2,allt3);
+
+
+im=rgb2gray(imread('cameraman.png'));
+im=im2double(im);
+im=resample(im,2,1)'; % upsample the image by 2
+im=resample(im,2,1)';
+im=resample(im,2,1)'; % upsample the image by 2
+im=resample(im,2,1)';
+im=resample(im,2,1)'; % upsample the image by 2
+im=resample(im,2,1)';
+errsBase{5}=getBaseVals(im,allt1,allt2,allt3,allt4);
+%errsTest{5}=getTestVals(im,allt2,allt3);
+
+
+im=(imread('120.jpg'));
+im=im2double(im);
+im=resample(im,2,1)'; % upsample the image by 2
+im=resample(im,2,1)';
+im=resample(im,2,1)'; % upsample the image by 2
+im=resample(im,2,1)';
+im=resample(im,2,1)'; % upsample the image by 2
+im=resample(im,2,1)';
+errsBase{6}=getBaseVals(im,allt1,allt2,allt3,allt4);
+%errsTest{6}=getTestVals(im,allt2,allt3);
+
+
+im=rgb2gray(imread('text.jpg'));
+im=im2double(im);
+im=resample(im,2,1)'; % upsample the image by 2
+im=resample(im,2,1)';
+im=resample(im,2,1)'; % upsample the image by 2
+im=resample(im,2,1)';
+im=resample(im,2,1)'; % upsample the image by 2
+im=resample(im,2,1)';
+im=resample(im,2,1)'; % upsample the image by 2
+im=resample(im,2,1)';
+errsBase{7}=getBaseVals(im,allt1,allt2,allt3,allt4);
+%errsTest{7}=getTestVals(im,allt2,allt3);
+
+
+im=rgb2gray(imread('alpaca.jpg'));
+im=im2double(im);
+im=resample(im,2,1)'; % upsample the image by 2
+im=resample(im,2,1)';
+im=resample(im,2,1)'; % upsample the image by 2
+im=resample(im,2,1)';
+im=resample(im,2,1)'; % upsample the image by 2
+im=resample(im,2,1)';
+im=resample(im,2,1)'; % upsample the image by 2
+im=resample(im,2,1)';
+errsBase{8}=getBaseVals(im,allt1,allt2,allt3,allt4);
+%errsTest{8}=getTestVals(im,allt2,allt3);
+
+
+function pixE=getBaseVals(im,allt1,allt2,allt3,allt4)
+
+    scale=4;
+
+
+    im1b = im; % the first image is not shifted or rotated
+    %im1 = lowpass(im1,[0.12 0.12]);
+    im1b = downsample(im1b,2*scale)'; % downsample the images by 8
+    im1b = downsample(im1b,2*scale)';
+
+    i=1;
+
+    
+    for test=1:50
+        t1=allt1{test};
+        im1 = imtranslate(im,[-t1(3)*2*scale,-t1(2)*2*scale]); % shift the images by integer pixels
+        im1 = imrotate(im1,t1(1),'bicubic','crop'); % rotate the images
+        %im2 = lowpass(im2,[0.12 0.12]);
+        im1 = downsample(im1,2*scale)'; % downsample the images by 8
+        im1 = downsample(im1,2*scale)';
+        im1s{test}=im1;
+        
+        
+        t2=allt2{test};
+        im2 = imtranslate(im,[-t2(3)*2*scale,-t2(2)*2*scale]); % shift the images by integer pixels
+        im2 = imrotate(im2,t2(1),'bicubic','crop'); % rotate the images
+        %im2 = lowpass(im2,[0.12 0.12]);
+        im2 = downsample(im2,2*scale)'; % downsample the images by 8
+        im2 = downsample(im2,2*scale)';
+        im2s{test}=im2;
+        
+        t3=allt3{test};
+        im3 = imtranslate(im,[-t3(3)*2*scale,-t3(2)*2*scale]); % shift the images by integer pixels
+        im3 = imrotate(im3,t3(1),'bicubic','crop'); % rotate the images
+        %im2 = lowpass(im2,[0.12 0.12]);
+        im3 = downsample(im3,2*scale)'; % downsample the images by 8
+        im3 = downsample(im3,2*scale)';
+        im3s{test}=im3;
+        
+        t4=allt4{test};
+        im4 = imtranslate(im,[-t4(3)*2*scale,-t4(2)*2*scale]); % shift the images by integer pixels
+        im4 = imrotate(im4,t4(1),'bicubic','crop'); % rotate the images
+        %im2 = lowpass(im2,[0.12 0.12]);
+        im4 = downsample(im4,2*scale)'; % downsample the images by 8
+        im4 = downsample(im4,2*scale)';
+        im4s{test}=im4;
+        
+
+    end
+    n=1;
+    for ns=[0.0,0.1,0.2,0.5,1.0]   
+        for test=1:50
+
+            t1=allt1{test};    
+            t2=allt2{test}-t1;
+            t3=allt3{test}-t1;
+            t4=allt4{test}-t1;
+
+
+            im1=imnoise(im1s{test},'gaussian',0.0,ns);
+            im2=imnoise(im2s{test},'gaussian',0.0,ns);
+            im3=imnoise(im3s{test},'gaussian',0.0,ns);
+            im4=imnoise(im4s{test},'gaussian',0.0,ns);
+
+
+            ims{1}=im1;
+            ims{2}=im2;
+            ims{3}=im3;
+            ims{4}=im4;
+
+
+            [d,p]=keren(ims);
+            im1t=[0,0,0];
+
+
+            im2tA=[p(2),d(2,1),d(2,2)];
+            im3tA=[p(3),d(3,1),d(3,2)];
+            im4tA=[p(4),d(4,1),d(4,2)];
+
+
+            pE4(test,1)=sum([getError(im1,im2,im1t,im2tA),getError(im1,im3,im1t,im3tA),getError(im2,im3,im2tA,im3tA),getError(im1,im4,im1t,im4tA),getError(im2,im4,im2tA,im4tA),getError(im3,im4,im3tA,im4tA)]);
+            sE4(test,1)=abs(t2(2)-im2tA(2))+abs(t2(3)-im2tA(3))+abs(t3(2)-im3tA(2))+abs(t3(3)-im3tA(3))+abs(t4(2)-im4tA(2))+abs(t4(3)-im4tA(3));
+            rE4(test,1)=abs(t2(1)-im2tA(1))+abs(t3(1)-im3tA(1))+abs(t4(1)-im4tA(1));
+            
+            
+
+
+
+            ims{1}=im2;
+            ims{2}=im1;
+            ims{3}=im3;
+            ims{4}=im4;
+
+
+            [d,p]=keren(ims);
+
+            im2tB=[p(1)-p(2),d(1,1)-d(2,1),d(1,2)-d(2,2)];
+            im3tB=[p(3)-p(2),d(3,1)-d(2,1),d(3,2)-d(2,2)];
+            im4tB=[p(4)-p(2),d(4,1)-d(2,1),d(4,2)-d(2,2)];
+
+
+            
+            im1tCurr=[p(2),d(2,1),d(2,2)];
+            im2tCurr=[p(1),d(1,1),d(1,2)];
+            im3tCurr=[p(3),d(3,1),d(3,2)];
+            im4tCurr=[p(4),d(4,1),d(4,2)];
+
+            
+
+            pE4(test,2)=sum([getError(im1,im2,im1tCurr,im2tB),getError(im1,im3,im1tCurr,im3tB),getError(im2,im3,im2tCurr,im3tCurr),getError(im1,im4,im1tCurr,im4tCurr),getError(im2,im4,im2tCurr,im4tCurr),getError(im3,im4,im3tCurr,im4tCurr)]);
+            sE4(test,2)=abs(t2(2)-im2tB(2))+abs(t2(3)-im2tB(3))+abs(t3(2)-im3tB(2))+abs(t3(3)-im3tB(3))+abs(t4(2)-im4tB(2))+abs(t4(3)-im4tB(3));
+            rE4(test,2)=abs(t2(1)-im2tB(1))+abs(t3(1)-im3tB(1))+abs(t4(1)-im4tB(1));
+            
+            
+
+
+            ims{1}=im3;
+            ims{2}=im1;
+            ims{3}=im2;
+            ims{4}=im4;
+
+
+            [d,p]=keren(ims);
+
+            im2tC=[p(3)-p(2),d(3,1)-d(2,1),d(3,2)-d(2,2)];
+            im3tC=[p(1)-p(2),d(1,1)-d(2,1),d(1,2)-d(2,2)];
+            im4tC=[p(4)-p(2),d(4,1)-d(2,1),d(4,2)-d(2,2)];
+
+
+            im1tCurr=[p(2),d(2,1),d(2,2)];
+            im2tCurr=[p(3),d(3,1),d(3,2)];
+            im3tCurr=[p(1),d(1,1),d(1,2)];
+            im4tCurr=[p(4),d(4,1),d(4,2)];
+
+            
+            
+
+            
+            pE4(test,3)=sum([getError(im1,im2,im1tCurr,im2tCurr),getError(im1,im3,im1tCurr,im3tCurr),getError(im2,im3,im2tCurr,im3tCurr),getError(im1,im4,im1tCurr,im4tCurr),getError(im2,im4,im2tCurr,im4tCurr),getError(im3,im4,im3tCurr,im4tCurr)]);
+            sE4(test,3)=abs(t2(2)-im2tC(2))+abs(t2(3)-im2tC(3))+abs(t3(2)-im3tC(2))+abs(t3(3)-im3tC(3))+abs(t4(2)-im4tC(2))+abs(t4(3)-im4tC(3));
+            rE4(test,3)=abs(t2(1)-im2tC(1))+abs(t3(1)-im3tC(1))+abs(t4(1)-im4tC(1));
+            
+            
+
+            ims{1}=im4;
+            ims{2}=im1;
+            ims{3}=im2;
+            ims{4}=im3;
+
+
+            [d,p]=keren(ims);
+
+            im2tD=[p(3)-p(2),d(3,1)-d(2,1),d(3,2)-d(2,2)];
+            im3tD=[p(4)-p(2),d(4,1)-d(2,1),d(4,2)-d(2,2)];
+            im4tD=[p(1)-p(2),d(1,1)-d(2,1),d(1,2)-d(2,2)];
+
+
+
+            im1tCurr=[p(2),d(2,1),d(2,2)];
+            im2tCurr=[p(3),d(3,1),d(3,2)];
+            im3tCurr=[p(4),d(4,1),d(4,2)];
+            im4tCurr=[p(1),d(1,1),d(1,2)];
+
+            
+            
+            
+            
+            
+            pE4(test,4)=sum([getError(im1,im2,im1tCurr,im2tCurr),getError(im1,im3,im1tCurr,im3tCurr),getError(im2,im3,im2tCurr,im3tCurr),getError(im1,im4,im1tCurr,im4tCurr),getError(im2,im4,im2tCurr,im4tCurr),getError(im3,im4,im3tCurr,im4tCurr)]);
+            sE4(test,4)=abs(t2(2)-im2tD(2))+abs(t2(3)-im2tD(3))+abs(t3(2)-im3tD(2))+abs(t3(3)-im3tD(3))+abs(t4(2)-im4tD(2))+abs(t4(3)-im4tD(3));
+            rE4(test,4)=abs(t2(1)-im2tD(1))+abs(t3(1)-im3tD(1))+abs(t4(1)-im4tD(1));
+            
+            im2Ts=[(im2tA);(im2tB);(im2tC);(im2tD)];
+            im3Ts=[(im3tA);(im3tB);(im3tC);(im3tD)];
+            im4Ts=[(im4tA);(im4tB);(im4tC);(im4tD)];
+            
+            
+           
+            
+            
+
+
+
+            err=9999;
+
+                % Min Spanning tree
+            for im2t=im2Ts.'
+                for im3t=im3Ts.'
+                    
+                    for im4t=im4Ts.'
+
+                        currE=sum([getError(im1,im2,im1t,im2t.'),getError(im1,im3,im1t,im3t.'),getError(im2,im3,im2t.',im3t.'),getError(im1,im4,im1t,im4t.'),getError(im2,im4,im2t.',im4t.'),getError(im3,im4,im3t.',im4t.')]);
+                        if currE<err
+                            err4=currE;
+                            opt4{1}=im2t.';
+                            opt4{2}=im3t.';
+                            opt4{3}=im4t.';
+                        end
+                        
+                    end
+                end   
+
+            end
+
+            pE4(test,5)=err4;
+            sE4(test,5)=abs(t2(2)-opt4{1}(2))+abs(t2(3)-opt4{1}(3))+abs(t3(2)-opt4{2}(2))+abs(t3(3)-opt4{2}(3))+abs(t4(2)-opt4{3}(2))+abs(t4(3)-opt4{3}(3));
+            rE4(test,5)=abs(t2(1)-opt4{1}(1))+abs(t3(1)-opt4{2}(1))+abs(t4(1)-opt4{3}(1));
+            
+
+
+        end 
+
+        pixE4{1}=(pE4);
+        pixE4{2}=(rE4);
+        pixE4{3}=(sE4);
+        
+
+        
+        pixE{1,n}=pixE4;
+
+        n=n+1;
+    end
+    
+    
+end
+
+
+
+function E=getError(im1b,im2b,im1t,im2t)
+im1=imrotate(im1b,-im1t(1),'bicubic','crop');
+im2=imrotate(im2b,-im2t(1),'bicubic','crop');
+
+im1=shift(im1,im1t(3),im1t(2));
+im2=shift(im2,im2t(3),im2t(2));
+
+%E = sum(sum((im1-im2).^2));
+
+[r, c, ~] = size(im1);
+
+rect=[c/8,r/8,c*3/4,r*3/4];
+im1c=(imcrop(im1,rect));
+im2c=(imcrop(im2,rect));
+[r, c, ~] = size(im1c);
+E = sum(imabsdiff(im1c,im2c).^2,'all')/(r*c);
+
+end
