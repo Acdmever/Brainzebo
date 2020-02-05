@@ -86,6 +86,9 @@ public class atomicAttraction : MonoBehaviour {
     void OnReceiveXYZ (OscMessage message) {
         _strengthOfAttraction = message.GetInt (0);
         _audioEmissionmult = message.GetInt (1);
+        int r = message.GetInt(2);
+        int g = message.GetInt(3);
+        int b = message.GetInt(4);
         // int z = message.GetInt (2);
 
         int countAtom = 0;
@@ -97,6 +100,10 @@ public class atomicAttraction : MonoBehaviour {
 
                 countAtom++;
             }
+            _sharedColor[i].r = (float)r/256f;
+            _sharedColor[i].g = (float)g/256f;
+            _sharedColor[i].b = (float)b/256;
+
         }
     }
 
