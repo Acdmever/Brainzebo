@@ -363,6 +363,9 @@
     <Reference Include="UnityEditor.Purchasing">
       <HintPath>C:/Users/Luis/Desktop/Gazbraino/Brainzebo/AtomicVision/Library/PackageCache/com.unity.purchasing@2.0.6/Editor/UnityEditor.Purchasing.dll</HintPath>
     </Reference>
+    <Reference Include="Valve.Newtonsoft.Json">
+      <HintPath>C:/Users/Luis/Desktop/Gazbraino/Brainzebo/AtomicVision/Assets/SteamVR/Input/Plugins/JSON.NET/Valve.Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="nunit.framework">
       <HintPath>C:/Users/Luis/Desktop/Gazbraino/Brainzebo/AtomicVision/Library/PackageCache/com.unity.ext.nunit@1.0.0/net35/unity-custom/nunit.framework.dll</HintPath>
     </Reference>
@@ -725,6 +728,26 @@
     <ProjectReference Include="Assembly-CSharp.csproj">
       <Project>{764818F5-C9D0-AC35-90CF-24E5F35E40E9}</Project>
       <Name>Assembly-CSharp</Name>
+    </ProjectReference>
+    <ProjectReference Include="SteamVR_Input_Editor.csproj">
+      <Project>{EB6D4111-E5BA-6457-2B3F-C33FDF47A317}</Project>
+      <Name>SteamVR_Input_Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="SteamVR_Editor.csproj">
+      <Project>{65FA074B-8645-98C3-3882-85A8DB17494B}</Project>
+      <Name>SteamVR_Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="SteamVR.csproj">
+      <Project>{FE286A58-2D7B-DA77-F2CC-FD67C3B42E4F}</Project>
+      <Name>SteamVR</Name>
+    </ProjectReference>
+    <ProjectReference Include="SteamVR_Windows_EditorHelper.csproj">
+      <Project>{324DD446-F6A3-1B06-5066-547A9A8FABF6}</Project>
+      <Name>SteamVR_Windows_EditorHelper</Name>
+    </ProjectReference>
+    <ProjectReference Include="SteamVR_Actions.csproj">
+      <Project>{000FF418-876C-83C7-45E6-99B95EE55AD5}</Project>
+      <Name>SteamVR_Actions</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
