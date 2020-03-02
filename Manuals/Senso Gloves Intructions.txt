@@ -1,0 +1,31 @@
+Intructions for use of Senso Gloves
+
+By Luis Cordero (lacordero@dal.ca)
+
+
+Installing gloves drivers:
+1.Make sure to download the driver from senso.me/dev (Currently Windows is the only OS able to run this)
+2.Insert one of the USB drives, then run "zadig" from the driver.
+3.In zadig, click Options and List All Devices.
+4.Choose CSR8510 A10 (USB Driver for Gloves), Replace Driver.
+
+Running:
+
+1.If gloves are charged, choose "run.cmd" from the dowloaded driver.
+2.Gloves should be running from this point.
+3.Make sure to calibrate gloves.
+
+To charge gloves, just connect them to the computer. They will not be recognized by the computer, but they will charge.
+
+Using with Unity:
+
+-Make sure to download the Plugin from senso.me/dev and import the asset to the project.
+
+-Check my example on how to use the built in vibration.
+
+Classes: 
+EPositionType is an enum: Unknown, RightHand, LeftHand, Body, PositionsCount. You can use these in order to get which device you are using.
+EFingerType is an enum as well: Thumb, Index, Middle, Third, Little. This is used to specify wich finger to vibrate.
+
+Functions:
+VibrateFinger(Senso.EFingerType finger, ushort duration, byte strength): Comes from Hand.cs, based on SendVibro(Senso.EPositionType handType, Senso.EFingerType finger, ushort duration, byte strength) from SensoHandsController.cs. This will vibrate the glove that the script is attatched to in Unity.

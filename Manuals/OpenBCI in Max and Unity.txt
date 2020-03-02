@@ -1,0 +1,28 @@
+OpenBCI Max and Unity Guide
+by Luis Cordero (lacordero@dal.ca)
+
+Summary:
+Max and Unity use OpenBCI GUI's network feature (using OSC) to receive all the data computed, so it is important to have it enabled. Additionally, Unity sends some of its computations (also via OSC) to the Max patch in order not to make the Max patch compute more than necessary.
+
+Unity:
+OpenBCIData.cs is the script that receives all the data from OpenBCI GUI and computes it into separate wave means, max values, and right/left means, additionally, it stores the wave values precomputed by OpenBCI GUI, so there are several different data values to use.
+
+SendMax.cs is the script that sends via OSC the computed data in Unity to a Max Patch. Currently, it only sends right and left means of SMR, low beta, beta and high beta waves, but it is simple add all the other wave values. Additionally, it computes a transistion value between the current wave value and its previous, in order to only compute the tansmitted data's scaled values, instead of needing to run OpenBCIData.cs's computation more often than it does now (once a second).
+
+
+Max:
+Note: When using Max for Live (run in Ableton Live), the patchers will not read any external MIDI synthesizers, only the instruments assigned in Ableton Live. Due to this, the file sender.maxpat was created to receive UDP messages and run the MIDI files, sender.maxpat has to be opened outside of Ableton live to work. This has been done in order to improve editing time of the OpenBCI Max files, since saving Max patches only works when run within Ableton Live (due to licensing issues). If there is no need to edit the patch, you can replace the 'udpsend' objects for 'midiout' and 'ctlout 1 1' objects, and run the patch outside ableton live. The biggest downside to having the MIDI messages sent via UDP is that there could be loss of data and latency, so it is recommended to do the final versions without using udpsend, and just ran outside ableton.
+Additionally, all of these patches were tested using VirtualMIDISynth (https://coolsoft.altervista.org/en/virtualmidisynth) for Windows, with "Timbres of Heaven" soundfont (http://midkar.com/soundfonts/index.html). Make sure to use this synthesizer or one similar to it. Do not use the synthesizer built-in Windows (Microsoft GS Wavetable Synth) since it does not support many MIDI CC Effects.
+The Max patches also use OSC-route to receive OSC messages, make sure to have it installed in Max from the package manager.
+
+Helpful Patchers: FormatOSC recieves the entire OSC message received by the Max patch, and formats it into 16 different lists with the following format: ([channel#],[freq1val],[freq2val]...[freq15val]). A channel is a node from the headwear, and the freqXval is the amplitude at X hertz.  If there would be a need to get amplitudes of freqs>15hz, add extra "nn"s at the end of all the "match" objects in FormatOSC.
+FormatFreqs receives the lists from FormatOSC, and then formats them to output lists of all the channel amplitude values at 1-15 hz, each list is a different frequency. In order to add another frequency, ony must add a 0. to all "unpack" objects, create a new pack object connected to a new outlet and connect it to the last outlet of each unpack item.
+
+OpenBCI.maxpat is the first developed patch, it receives the raw FFT values from OpenBCI GUI, and distributes them into different instruments, depending on the amplitude, the note of the instrument will be higher or lower depending of the amplitude of each frequency. The amplitude must be between a determined range [36,83](MIDI Note Range), if not, there will be no note played. The current patcher only uses frequencies 1-10 hz in order not to overwhelm the listener with sounds.
+
+OpenBCI2.maxpat reads a MIDI file, assigns a frequency from the FFT values 1-15hz to the MIDI channels 1-16 (except channel 10, since it is used for percussion instruments and is easily crashable). It scales the amplitude values to the range [1,128], which is all the different instruments there are in MIDI. And, changes the instruments on the channels depending on the amplitude of the FFT frequency assigned to the channel.
+
+OpenBCI2b.maxpat was built upon OpenBCI2.maxpat. It additionally receives extra wave data from the OpenBCI Unity Project, so it is necessary to run the unity project when using this patch. With wave band data from Unity and OpenBCI GUI, the patch scales those values to a range [0,100] and sends different MIDI CC messages to the synthesizer depending on which wave data we are using. There is additionally the option to play the MIDI file like in OpenBCI2.maxpat, and also to play the file with the default instruments.
+
+OpenBCI3.maxpat reads the FFT values from 1-15hz assigns to each a soundwave frequency (equal to different music notes). The values are scaled to [-50,-20] (amplitude in db). Depending on the amplitude of the FFT, the dB value of the waves increase. This produces a "humming sound".
+

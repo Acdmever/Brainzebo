@@ -1,0 +1,40 @@
+Unity Project: MaxProject
+by Luis Cordero (lacordero@dal.ca)
+
+Introduction: Information on MaxProject and OpenBCI2c.matpat.
+Currenlty, this project uses OpenBCI data, MIDI files and Senso Glove movement data. When ran, the user can control which .mid file is being played, values of MIDI CC effects, or whether the MIDI CC values are changes by the OpenBCI data. 
+
+Senso Movement Commands:
+Swipe movement: Change song
+Fast grip movement: Change settings (Effects changed by user <-> Effects changed by OpenBCI Data)
+Look at effect text, then raise or lower movement: Change effect value
+
+Running instructions: 
+1. Have OpenBCI GUI streaming data (see OpenBCI Manual to know how to do this, can be live or recorded data) and sending OSC to ports 12345 (FFT data) and 12346 (Wave Band Power)
+2. Open OpenBCI2c.maxpat, make sure it is bound to ports 12348 and 12349. Have the control toggle on.
+3. Run the "run" command for the Senso Gloves, make sure both gloves are running and connected. The unity extension for the gloves requires for the left glove to be connected, if not not even the right glove will work in unity, even if it would be connected and running. Also, it happens sometimes that the gloves randomly disconnect, if this were to happen, you can wait until they reconnect, or close and run the "run" command to restart the gloves connection.
+4. Have VR enabled in the project (OpenVR SDK)
+
+Objects and its interactions:
+Lights: Currently, each light's intensity depends on the mean amplitude on beta waves of either the left or right side of the brain. The color values depend on different waves and their amplitudes and are different on each lamp. 
+Camera Rig: HMD camera, it has the left and right hand containers as children, which have all the position, and movement data from the senso gloves.
+OpenBCI: Empty object, its script manages and calculates everything receieved from the OpenBCI GUI.
+MaxSender: Empty object, its script manages what is sent to the Max Patch.
+SensoManager: Empty object, script receives all data the gloves send. Made by the Senso developers.
+Planes: This object is the parent of planes that are in the same position, it controls the planes cycling so the user can control different MIDI efects. When the user looks directly at the current plane, the plane will change material to prompt the user that it can be controlled. If the user then positions his hand in the control position, the plane will change to yet another material to prompt that it the MIDI CC effect is currently being controlled by the user. When the user changes hand position, the plane will change to a previous material. And, if the user doesn't look at the plane directly, the plane will change to its default material.
+Plane: Object that helps control the user's change MIDI effect commands. 
+Materials: Blocks outside the scene that only work as a reference to retreive the different materials for the planes. This is just a temporary solution since the materials cannot be retreived from resources.
+
+Scripts:
+SensoHandExample: Developed by the Senso developers, but we added several functions to it. It was at first meant to only create a hand representation in unity based on the data received from the gloves. Since it has already several function that retrieve the angles, and rotations, this was the best script to base on. Based on the current rotation of the users hand, current angle of the fingers, and angles from the previous frames. With this data, the script can determine if the user is changing MIDI effects, and the current level the user is inputing. Also, whether the user did a swipe motion, to change songs. Or if the user did a fast grip motion.
+LightScript: This script is attatched to a light object, in this case one of the lamps. It retreives the wave values from OpenBCIData every n amount of frames. It also saves 2 colors and 2 intesity values, which are used to interpolate gradually from the older values to the newer ones, which will be the current color and intensity values of the light. This makes it so the wave values are retreived less often, and yet the values are up to date and transitions are smooth. This script uses low, medium and high beta values as the RGB color values of the light, and the beta values on the left side of the brain as intesity.
+LightScript2: Similar as LightScript, but it uses delta, theta and alpha waves for its RGB color values, and it uses the beta values on the right side of the brain
+OpenBCIData: This script receives all the data sent by the OpenBCI GUI(FFT and Wave band values). It takes the FFT values, and calculates the means and max values of all waves, and right and left means of some. Using the most relevant channels where each wave is most present. In the case of Wave band values, it only stores them, as a way for other scripts to quickly access them if needed.
+SendMax: This script is the one that sends the data that the Max Patch needs. It retrieves wave values from OpenBCIData, interpolates new with old values like in LightScript, and sends it to the max patch. Additionally, when a plane is seen it receives its MIDI CC value, and monitors the SensoHandExample whether the user's hand is in the rotation to change values, if it is, it sends the values to the Max Patch. Additionally, if the user makes another command motion, the script reads it from OpenBCIData and sends it to the patch as well.
+PlanesController: This script is the one that manages the cycling of the plane that are children to a "Planes" object. Additionally, it cahnges the materials of the planes when they are bing seen, or controlled.
+TestVision: This script is in each plane. The script sends its MIDI CC value to SendMax when the user is looking at it, and also when the user stops looking at it. The way the script determines whether the user is looking at it is: it takes the HMD camera and gets the viewport coordinates of the plane, checking if it is in front of the camera (z>0) and if it between the range of [0.35,0.65] in the x and y coordinates (center of the camera)
+
+Additional notes:
+In the current project, we do not need to worry about 2 planes being seen at the same time, due to the distance between planes, there will not be a point where 2 planes are in the given range of the viewport  
+
+

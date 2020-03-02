@@ -1,0 +1,34 @@
+OpenBCI Instructions
+By Luis Cordero (lacordero@dal.ca)
+
+Install instructions:
+
+Before starting, check if the drivers for the dongle are installed (IE the dongle is recognized when connected). If not, download them from https://www.ftdichip.com/Drivers/VCP.htm 
+Additionally, make sure you have git and node.js installed.
+
+Installing instructions:
+
+1. We first need to have OpenBCI Hub. Open Git Bash.
+2. Go to the directory where you want the OpenBCI software to be installed in.
+3. git clone https://github.com/OpenBCI/OpenBCI_Ganglion_Electron.git
+4. cd OpenBCI_Ganglion_Electron
+5. npm install
+6. npm install electron-prebuilt -g
+7. Then, we need to download OpenBCI GUI. Download it from  https://openbci.com/index.php/downloads .
+
+With this, we have all the required software installed and downloaded.
+
+Running instructions. Make sure the dongle is connected.
+Hub:
+1.Open Git Bash
+2.Go to the directory the Hub was installed. E.g. Documents/OpenBCI/OpenBCI_Ganglion_Electron
+3.npm start
+4. Sometimes, it might seem like it did not work because of a javascript error, but it is working. Close the error window and keep Bash open.
+
+GUI:
+1.Run the executable OpenBCI_GUI that was downloaded
+2.Click "Live from Cyton"
+3."Using the serial Dongle". 
+4.Select port COM3 , 16 channels
+5."Start"
+6."Start data streaming" on the top left, don't forget to turn on the headwear, there is a little switch on the right side of the board in the headwear. From here the OpenBCI_GUI should be fully functional.

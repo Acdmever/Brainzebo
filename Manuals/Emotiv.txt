@@ -1,0 +1,52 @@
+Using Emotiv BCI and its Python classifiers with Unity
+by Luis Cordero (lacordero@dal.ca)
+
+Install instructions:
+We need to have the Emotiv App and the Emotiv Pro Software installed before being able to use the BCI device. Also, we need an account that has a Pro License, and has applied to get the raw EEG data from the Emotiv website.
+The following account has all the necessary permissions:
+User: reilly
+PW: Dalhousie2019
+
+Installing steps:
+1. Go to emotiv.com
+2. Log in
+3. Go to My Account
+4. Go to Downloads
+5. Download and install the Emotiv Installer
+6. Install Emotiv app and Emotiv Pro
+7. When done, make sure to log into the installed software with the pro account.
+
+
+Using the Emotiv BCI:
+In order to access the data from an Emotiv BCI, we will need to set up two things. First, we need to have a registered "Cortex App" connected to our our Cortex App software. And, we need to have the BCI headwear connected to the App as well.
+
+The Cortex app is used as an interface to receive all the data from the BCI. It uses websocket with JSON formatted messages as the way to communicate with it. In order to implement this in a simpler fashion, we use the cortex2 python library. (https://pypi.org/project/cortex2/)
+
+Registering a "Cortex App":
+1. Go to emotiv.com and to "My Account"
+2. Go to "Cortex Apps"
+3. Add a name and register your application
+4. Make sure to save the Client ID and the Client Secret.
+5. Run python script with corresponding Client Id and Client Secret. It will not work, but will ask for permission to the Cortex App software.
+6. Open Cortex App Software
+7. Go to Apps tab
+8. Approve the app
+
+
+Connecting Headwear:
+1. Connect Emotiv USB Port
+2. Turn on Headset
+3. Open Cortex App Software
+4. Connect the Headwear
+
+To check the connection strength between the head and electrodes. 
+
+
+Running the scripts:
+
+emotiv_receiever.py: This is the script that communicates with the Cortex App Software. It receieves the EEG data, then formats it and sends it out to bci_classifiers.ipynb via OSC. The easiest way to run it on windows is on the anaconda command prompt with the command: 
+python test.py
+
+bci_classifiers.ipynb: This is the script that classifies the Emotiv EEG data into Valence, Arousal, and Side decision (Motor Imagery). Then, the classifications are sent to Unity via OSC. 
+The way the script works is that it first reads the training datasets and trains the agents. Then it receives the EEG data from test.py, creates a baseline for the first 3 seconds, which is meant for the side decision classifier. And the, the classifiying starts after.
+To run this, open Anaconda and then jupyter notebook. Then open the file. 

@@ -1,0 +1,95 @@
+4-Oct 2017
+
+- Look at Max SDK - how to build objects…. 
+- Hook up VPs to AUMI.
+    - Get VP info from Ian
+    
+11-Oct 2017
+
+## Projects etc.
+
+- UH research: Max objects, integrate with AUMI, granular synth control, 3D audio mixing and production
+- Tacton experiment: feasibility and pilots for redoing/building on Marcello's tacton study (for publication in TENOR?)
+- Haptics integration: AUMI (with VP and UH)
+- CHI workshop participation - pending... 
+
+## Recap from last week: 
+
+#### Aditya: 
+
+- Building Max objects - can't compile objects with Ultrahaptics (UH) libraries linked. Architecture mismatch. 
+- Looking to build with OSC instead. 
+
+#### Johnny: 
+
+- Got VibroPixel (VP) info from Ian to address units. Now can test for tacton belt and AUMI integration. 
+- Learning C++ and XCode to get current on UH dev. 
+
+## Skype call with Marcello:
+
+Tacton experiment - Feasibility for a new experiment/lessons learned from original:
+
+- Keep new experiment simple and consistent with the original
+- Major problems:
+    + Different instruments
+    + Different participant musical level
+    + 2 sessions not enough to see any trends
+    + Music was very easy, need passages that are more challenging? (Need expert level participants)
+- Multiple sessions - would be ready this term - 
+    + can do pilots now
+    + Full study in the winter
+- Idea for the study -
+    + Something like "40 Icons" - a piece made of 10 different sections with different dynamics/difficulty levels
+    + After 5 weeks can participants perform piece correctly - sections randomized - with correct articulations, dynamics
+    + Train with them once a week for an hour
+    + Use piano (MIDI data), easy to analyze (tempo, correct notes, dynamics)
+- Number of participants? 5 - 6 maybe? 
+    + Booking them for 1 hour per week might be tough, and a lot of time
+    + Pay them...?
+
+CHI workshop:
+
+- UH submitting proposal for organizing a session around mid-air haptics
+    + Organizers: Stephen Brewster - Glasgow; someone from Korea (AR piano w/ UH)
+    + Submitting this Friday; will know in November. 
+    + Can submit something with Max objects - would be good. 
+
+Compiling Max objects for UH: 
+
+- Max objects need to compile for i386 architecture, while UH API specifies x64. 
+- Aditya will send logs to Marcello; he and UH devs will look into it. 
+- Using XCode, Marcello uses CMake.. 
+
+
+## Next steps (for next week?): 
+
+- Tacton Experiment: 
+    + Make a basic plan/timeline for the study and send to Marcello for input
+    + Implement a test VP belt. 
+    + Organize some pilots (test VP vs Bodysuit belt)
+- UltraHaptics: 
+    + UH team will look at logfiles to see if Max object compilation can work
+    + Will work with OSC implementation (oscpack - http://www.rossbencina.com/code/oscpack?q=~rossb/code/oscpack/) - could also try libmapper
+    + Check with Johnty about architectures/OSC/libmapper implementation
+- VP/AUMI: 
+    + Test VP addressing
+    + Working AUMI demo and tacton belt
+
+## General long term scheduling: 
+
+- October:
+    + Tech tests, getting things running
+- November: 
+    + Pilots
+    + Organize tacton study for winter
+    + CHI workshop proposal
+- December: 
+    + recruiting
+- January/February:
+    + Run tacton study
+- March: 
+    + CHI workshop
+- Spring: 
+    + publish tacton study results
+    
+    

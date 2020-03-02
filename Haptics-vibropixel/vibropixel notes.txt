@@ -1,0 +1,59 @@
+Message structure: 
+
+-. address (16 bit)
+-. [14] code to send message
+0. [motor.rate]         0 - 173 ?   // oscillation frequency 
+1. [motor.amplitude]    0 - 255     // amplitude
+2. [motor.sustain]      0 - 72 ?    // sustain
+3. [motor.attack]       0 - 100     // attack
+4. [motor.decay]        0 - 100     // decay
+5. [motor.length]       // length of oscillations
+6.
+7.
+8.
+9.
+10.
+11.
+
+
+[ {add} 14 245 {amp} 41 0 0 44 10 10 {lamp} 1 200 10 ]
+[ {add} 14 245 {amp} 41 0 0 44 10 10 {lamp} 255 10 10 ]
+
+
+Questions for Ian about VPs: 
+
+- What is the addressing scheme? 
+    - unit/subgroup/supergroup
+    - Addressing individual units? 
+- Can both motors be controlled independently? 
+- Continuous signals? 
+
+
+Addressing VIBROPIXELS: 
+
+Hi Johnny, 
+
+Some answers are inline:
+
+ •  First, can you explain the addressing scheme a bit? I understand there are device and (sub/super)group IDs for each device. If I follow correctly, these IDs combine into a 6-bit address. In the messages sent from Max, the address is represented as a 16-bit number, which can denote a single device, or group, or combination of. Can you explain how the addresses are formulated and/or what they are? 
+
+I’m attaching a max patch which demonstrates the simplest approach to generating the address. Right now its 9-bits for device ID, and the 7 bits for group ID.
+
+ •  An initial objective is to replicate some of the tactons used in the bodysuit project, which entails sending discreetly timed messages to individual motors so this can be done just by sending messages with the right address, yes? 
+ es, that should be correct.
+
+ •  Your HCII paper mentions written documentation - is this available? 
+ ure - here is a link to it. It is pretty out of date at this point, but much of the info should still be generally accurate.
+
+ •  In the current device and firmware configuration, is it just the single cylinder motor that is operating and the coin motor not? 
+It depends. The general firmware is for both motors to be active, with the stronger motor kicking in at higher amplitudes. But it is possible to disable one or the other of the motors, if they are no functioning anyways for example. The text in the firmware and max patch talking about VP_VERSION details this.
+
+ •  Can the two motors be controlled independently without altering the firmware? 
+ atrick has been using a firmware that addresses each motor individually, but the patch I distributed does not allow this.
+
+ •  One objective for implementing haptic feedback in a DMI or interactive system is to modulate the amplitude of a haptic device with a continuous control signal. One way of mimicking this with the iLinx/BodySuit hardware was to send envelope messages with long sustain times, and then send new messages with a different amplitudes and envelope curves to overwrite the previous. I assume the same approach would work with the vibropixels though I haven’t tried it yet. Have you considered this and/or have any insights around this? 
+ eah, this should still work for the VibroPixels, and actually is probably the best way to do it. This way, if a message is dropped there is still a finite envelope applied to the signal and the motor won’t get “stuck on”. It might make sense to make a simplified control message though which doesn’t contain the oscillation parameters.
+
+Hoep that helps, feel free to ask more questions.
+
+-ian
